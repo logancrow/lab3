@@ -23,3 +23,14 @@ void ST7735_Line(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t);
 void DrawLineDown(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t);
 
 void DrawLineUp(uint16_t, uint16_t, uint16_t, uint16_t, uint16_t);
+
+void drawCircle (uint16_t, uint16_t, uint16_t);
+
+void drawClockDigits(void);
+
+void drawMinuteHand(uint16_t);
+
+void drawSecondHand(uint16_t);
+
+//first parameter hours, 2nd parameter minutes
+void drawHourHand(uint16_t, uint16_t);

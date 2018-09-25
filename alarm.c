@@ -7,6 +7,8 @@
 #include "alarm.h"
 #include "../inc/tm4c123gh6pm.h"
 
+int buffer = 0;
+
 // ***************** TIMER1_Init100Hz ****************
 // Activate TIMER1 interrupts to run user task periodically at 100 Hz
 // Inputs:  none
@@ -27,7 +29,10 @@ void Timer1_Init100Hz(){
 }
 
 void Timer1A_Handler(void){
-  PE4 ^= 0x10;         //toggle PE4
+	if(buffer == 25805){
+		PE4 ^= 0x10;         //toggle PE4
+	}
+	buffer = (buffer + 1)%25806;
 }
 
 //initializes PE4 to be output

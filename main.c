@@ -63,11 +63,10 @@ int main(void){
   EnableInterrupts();
 	uint8_t CS = main_menu;
   while(1){
-		if(sw1) ST7735_OutString("Set_Alarm: ");      //replace with graphics
-		/*if(CS == main_menu) CS = menu();
+		if(CS == main_menu) CS = menu();
 		if(CS == show_display) CS = display();
 		if(CS == set_time) CS = time();
-		if(CS == set_alarm) CS = alarm(); */
+		if(CS == set_alarm) CS = alarm(); 
   }
 }
 

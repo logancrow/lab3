@@ -10,6 +10,7 @@
 #include "../inc/tm4c123gh6pm.h"
 #include "alarm.h"
 #include "stdio.h"
+#include "line.h"
 
 uint8_t hours;
 uint8_t minutes;
@@ -53,6 +54,7 @@ void DelayWait10ms(uint32_t n){
 
 int menu(){
 	DelayWait10ms(50);            //debounce
+	ST7735_SetCursor(0,0);
 	ST7735_OutString("Main_menu\r");  
 	ST7735_OutString("Dispay Mode:  sw1\r");
 	ST7735_OutString("Set Time:     sw2\r");
@@ -77,7 +79,16 @@ int menu(){
 int display(){
 	DelayWait10ms(50);            //debounce
 	while(!sw1){
-	  ST7735_OutString("Display");  //replace this with display graphics
+		ST7735_SetCursor(0,0);
+		ST7735_OutString("Main Menu:  sw1\r");
+		ST7735_OutString("Alarm Off:  sw4\r");
+	  char time[6];
+		sprintf(time,"%02d:%02d",hours,minutes);
+		ST7735_OutString(time);
+		drawCircle(48,64,93);
+		drawClockDigits();
+		drawMinuteHand(minutes);
+		drawHourHand(hours,minutes);
 		if((hours == alarm_hours) && (minutes == alarm_minutes) && (seconds == 0) && alarm_enable){  //if alarm time is reached, turn it on
 		  Alarm_On();			
 		}
@@ -96,6 +107,7 @@ int time(){
 	DisableInterrupts();
 	seconds = 0;
 	while(!sw1){
+		ST7735_SetCursor(0,0);
 		ST7735_OutString("Main Menu:    sw1\r");
 	  ST7735_OutString("Hour Up:      sw2\r");
 	  ST7735_OutString("Minute Up:    sw3\r");
@@ -125,6 +137,7 @@ int alarm(){
 	DelayWait10ms(50);            //debounce
 	alarm_enable = 0;    //don't allow alarm to go off while setting it
 	while((!sw1) && (!sw4)){
+		ST7735_SetCursor(0,0);
 	  ST7735_OutString("Set Alarm:      sw1\r");
 	  ST7735_OutString("Hour Up:        sw2\r");
 	  ST7735_OutString("Minute Up:      sw3\r");
@@ -138,7 +151,7 @@ int alarm(){
 			alarm_hours = (alarm_hours + 1)%24;
 			ST7735_FillScreen(ST7735_BLACK);   //clear screen
 		}
-		if(sw2){
+		if(sw3){
 			DelayWait10ms(10);        //debounce
 			alarm_minutes = (alarm_minutes +1)%60;
 			ST7735_FillScreen(ST7735_BLACK);   //clear screen
