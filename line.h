@@ -34,3 +34,6 @@ void drawSecondHand(uint16_t);
 
 //first parameter hours, 2nd parameter minutes
 void drawHourHand(uint16_t, uint16_t);
+
+void test(void);
+

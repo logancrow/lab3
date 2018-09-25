@@ -49,7 +49,6 @@ void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 void PortF_Init(void);
 
-
 int main(void){
   PLL_Init(Bus80MHz);    	// 80 MHz
 	Timer0A_Init1Hz();               // set up Timer0A for 1 Hz interrupts
@@ -62,11 +61,12 @@ int main(void){
 	InitializeGlobals();
   EnableInterrupts();
 	uint8_t CS = main_menu;
+	CS = display();
   while(1){
 		if(CS == main_menu) CS = menu();
 		if(CS == show_display) CS = display();
 		if(CS == set_time) CS = time();
-		if(CS == set_alarm) CS = alarm(); 
+		if(CS == set_alarm) CS = alarm();
   }
 }
 

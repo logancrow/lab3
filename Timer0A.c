@@ -28,11 +28,10 @@
 #include <stdint.h>
 #include "..//inc//tm4c123gh6pm.h"
 #include "controller.h"
+#include "line.h"
 
 #define PF1             (*((volatile uint32_t *)0x40025008))
 #define PF2             (*((volatile uint32_t *)0x40025010))
-
-int spacer = 0;
 
 void DisableInterrupts(void); // Disable interrupts
 void EnableInterrupts(void);  // Enable interrupts
@@ -40,7 +39,6 @@ long StartCritical (void);    // previous I bit, disable interrupts
 void EndCritical(long sr);    // restore I bit to previous value
 void WaitForInterrupt(void);  // low power mode
 void (*PeriodicTask)(void);   // user function
-
 
 // ***************** Timer0A_Init ****************
 // Activate TIMER0 interrupts to run user task periodically
@@ -50,31 +48,30 @@ void (*PeriodicTask)(void);   // user function
 void Timer0A_Init1Hz(){
 	volatile uint32_t delay;
 	DisableInterrupts();
-  SYSCTL_RCGCTIMER_R |= 0x01;   // 0) activate TIMER0
+  SYSCTL_RCGCTIMER_R |= 0x00000001;   // 0) activate TIMER0
 	delay = SYSCTL_RCGCTIMER_R;      // allow time to finish activating
   TIMER0_CTL_R = 0x00000000;    // 1) disable TIMER0A during setup
   TIMER0_CFG_R = 0x00000000;    // 2) configure for 32-bit mode
   TIMER0_TAMR_R = TIMER_TAMR_TAMR_PERIOD;   // 3) configure for periodic mode, default down-count settings
-  TIMER0_TAILR_R = 799999;      // 4) reload value (1Hz)
-  TIMER0_TAPR_R = 0;            // 5) bus clock resolution
+  //TIMER0_TAMR_R = 0x00000002;
+	TIMER0_TAILR_R = 80000000 - 1;      // 4) reload value (1Hz)
+  TIMER0_TAPR_R = 0x00000000;            // 5) bus clock resolution
   TIMER0_ICR_R = 0x00000001;    // 6) clear TIMER0A timeout flag
   TIMER0_IMR_R = 0x00000001;    // 7) arm timeout interrupt
   NVIC_PRI4_R = (NVIC_PRI4_R&0x00FFFFFF)|0x80000000; // 8) priority 4
 // interrupts enabled in the main program after all devices initialized
 // vector number 35, interrupt number 19
   NVIC_EN0_R = 1<<19;           // 9) enable IRQ 19 in NVIC
-  //TIMER0_CTL_R = 0x00000001;    // 10) enable TIMER0A
+  TIMER0_CTL_R = 0x00000001;    // 10) enable TIMER0A
+	
 }
 
 void Timer0A_Handler(void){
-	//PF2 ^= 0x04;
-	if(spacer == 2580644){
-		if((minutes == 59)&&(seconds == 59)) hours = (hours + 1)%24;
-		if(seconds == 59) minutes = (minutes + 1)%60;
-		seconds = (seconds + 1)%60;
-		PF1 ^= 0x02;
-	}
-	spacer = (spacer + 1)%2580645;
-	//PF2 ^= 0x04;
-	//PF2 ^= 0x04;
+	TIMER0_ICR_R = TIMER_ICR_TATOCINT;
+	PF2 ^= 0x04;
+	if((minutes == 59)&&(seconds == 59)) hours = (hours + 1)%24;
+	if(seconds == 59) minutes = (minutes + 1)%60;
+	seconds = (seconds + 1)%60;
+	PF2 ^= 0x04;
+	PF2 ^= 0x04;
 }

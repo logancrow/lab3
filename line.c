@@ -85,7 +85,7 @@ const uint16_t yCoordinates[60] = {
 };
 
 
-const uint16_t xHourCoordinates[12] = {
+const uint16_t xHour2Coordinates[12] = {
 	//12 O'Clock to 2 O'Clock
 	 64,  74,  81,
 	//3 O'Clock to 5 O'Clock
@@ -96,7 +96,18 @@ const uint16_t xHourCoordinates[12] = {
 	 44,  47,  54
 };
 
-const uint16_t yHourCoordinates[12] = {
+const uint16_t xHourCoordinates[60] = {
+	//12 O'Clock to 2 O'Clock
+	 64,  66,  68,  70,  72,  74,  76,  77,  79,  80,  81,  82,  83,  83,  84,  
+	//3 O'Clock to 5 O'Clock
+	 84,  84,  83,  83,  82,  81,  80,  79,  77,  76,  74,  72,  70,  68,  66,
+	//6 O'Clock to 8 O'Clock
+	 64,  62,  60,  58,  56,  54,  52,  51,  49,  48,  47,  46,  45,  44,  44,
+	//9 O'Clock to 11 O'Clock 
+	 44,  44,  44,  45,  46,  47,  48,  49,  51,  52,  54,  56,  58,  60,  62
+};
+
+const uint16_t yHour2Coordinates[12] = {
 	//12 O'Clock to 2 O'Clock
 	 73,  76,  83,
 	//3 O'Clock to 5 O'Clock
@@ -105,6 +116,17 @@ const uint16_t yHourCoordinates[12] = {
 	113, 110, 103,
 	//9 O'Clock to 11 O'Clock 
 	 93,  83,  76
+};
+
+const uint16_t yHourCoordinates[60] = {
+	//12 O'Clock to 2 O'Clock
+	 73,  73,  74,  74,  75,  76,  77,  78,  80,  81,  83,  85,  87,  89,  91,
+	//3 O'Clock to 5 O'Clock
+	 93,  95,  97,  99, 101, 103, 105, 106, 108, 109, 110, 111, 112, 113, 113,
+	//6 O'Clock to 8 O'Clock
+	113, 113, 113, 112, 111, 110, 109, 108, 106, 105, 103, 101,  99,  97,  95,
+	//9 O'Clock to 11 O'Clock 
+	 93,  91,  89,  87,  85,  83,  81,  80,  78,  77,  76,  75,  74,  74,  73
 };
 
 void drawMinuteHand(uint16_t minutes) {
@@ -130,13 +152,19 @@ void drawSecondHand(uint16_t seconds) {
 }
 
 void drawHourHand(uint16_t hours, uint16_t minutes) {
-	if (hours == 0) {
-			ST7735_Line(64, 93, xHourCoordinates[11], yCoordinates[11], ST7735_BLACK);
-			ST7735_Line(64, 93, xHourCoordinates[hours], yCoordinates[hours], ST7735_BLUE);
+	if (hours == 0 && minutes < 12) {
+			ST7735_Line(64, 93, xHourCoordinates[59], yHourCoordinates[59], ST7735_BLACK);
+			ST7735_Line(64, 93, xHourCoordinates[hours], yHourCoordinates[hours], ST7735_WHITE);
 	}
 	else {
-		ST7735_Line(64, 93, xHourCoordinates[hours - 1], yHourCoordinates[hours], ST7735_BLACK);
-		ST7735_Line(64, 93, xHourCoordinates[hours], yHourCoordinates[hours], ST7735_BLUE);
+		ST7735_Line(64, 93, xHourCoordinates[(hours*5)+(minutes/12)-1], yHourCoordinates[(hours*5)+(minutes/12)-1], ST7735_BLACK);
+		ST7735_Line(64, 93, xHourCoordinates[(hours*5)+(minutes/12)], yHourCoordinates[(hours*5)+(minutes/12)], ST7735_WHITE);
+	}
+}
+
+void test(void) {
+		for (int i = 0; i < 60; i++) {
+			ST7735_Line(64, 93, xHourCoordinates[i], yHourCoordinates[i], ST7735_WHITE);
 	}
 }
 

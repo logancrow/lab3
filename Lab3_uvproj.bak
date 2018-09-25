@@ -450,6 +450,11 @@
               <FileType>1</FileType>
               <FilePath>.\Timer0.c</FilePath>
             </File>
+            <File>
+              <FileName>alarm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\alarm.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
