@@ -29,7 +29,6 @@ void InitializeGlobals(){
 	seconds = 0;
 	alarm_hours = 0;
 	alarm_minutes = 0;
-	flag= 0;
 }
 
 //initializes PE0-PE3 to be inputs
@@ -57,9 +56,13 @@ int menu(){
 	DelayWait10ms(50);            //debounce
 	ST7735_SetCursor(0,0);
 	ST7735_OutString("Main_menu\r");  
+	ST7735_SetCursor(0,1);
 	ST7735_OutString("Dispay Mode:  sw1\r");
+	ST7735_SetCursor(0,2);
 	ST7735_OutString("Set Time:     sw2\r");
+	ST7735_SetCursor(0,3);
 	ST7735_OutString("Set Alarm:    sw3\r");
+	ST7735_SetCursor(0,4);
 	ST7735_OutString("Alarm Off:    sw4\r");
 	while(!sw1 && !sw2 && !sw3){
 		if((hours == alarm_hours) && (minutes == alarm_minutes) && (seconds == 0) && alarm_enable){  //if alarm time is reached, turn it on
@@ -113,8 +116,11 @@ int time(){
 	while(!sw1){
 		ST7735_SetCursor(0,0);
 		ST7735_OutString("Main Menu:    sw1\r");
+		ST7735_SetCursor(0,1);
 	  ST7735_OutString("Hour Up:      sw2\r");
+		ST7735_SetCursor(0,2);
 	  ST7735_OutString("Minute Up:    sw3\r");
+		ST7735_SetCursor(0,3);
 		ST7735_OutString("Set_Time: ");  //replace this with display graphics
 		char time[6];
 		sprintf(time,"%02d:%02d",hours,minutes);
@@ -143,9 +149,13 @@ int alarm(){
 	while((!sw1) && (!sw4)){
 		ST7735_SetCursor(0,0);
 	  ST7735_OutString("Set Alarm:      sw1\r");
+		ST7735_SetCursor(0,1);
 	  ST7735_OutString("Hour Up:        sw2\r");
+		ST7735_SetCursor(0,2);
 	  ST7735_OutString("Minute Up:      sw3\r");
+		ST7735_SetCursor(0,3);
   	ST7735_OutString("Disable Alarm:  sw4\r");
+		ST7735_SetCursor(0,4);
 		ST7735_OutString("Set_Alarm: ");      //replace with graphics
 		char time[6];
 		sprintf(time,"%02d:%02d",alarm_hours,alarm_minutes);

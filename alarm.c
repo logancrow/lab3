@@ -7,6 +7,8 @@
 #include "alarm.h"
 #include "../inc/tm4c123gh6pm.h"
 
+#define PF1             (*((volatile uint32_t *)0x40025008))
+
 int buffer = 0;
 
 // ***************** TIMER1_Init100Hz ****************
@@ -29,10 +31,12 @@ void Timer1_Init100Hz(){
 }
 
 void Timer1A_Handler(void){
-	if(buffer == 25805){
-		PE4 ^= 0x10;         //toggle PE4
-	}
-	buffer = (buffer + 1)%25806;
+	TIMER1_ICR_R = TIMER_ICR_TATOCINT;
+	//if(buffer == 25805){
+	PE4 ^= 0x10;         //toggle PE4
+	PF1 ^= 0x02;
+	//}
+	//buffer = (buffer + 1)%25806;
 }
 
 //initializes PE4 to be output

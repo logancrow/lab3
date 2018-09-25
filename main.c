@@ -53,16 +53,17 @@ int main(void){
   PLL_Init(Bus80MHz);    	// 80 MHz
 	Timer0A_Init1Hz();               // set up Timer0A for 1 Hz interrupts
 	PortD_Init();
-  //PortE4_Init();	
+  PortE4_Init();	
 	PortF_Init();
 	ST7735_InitR(INITR_REDTAB);
 	ST7735_FillScreen(ST7735_BLACK);       
-	//Timer1_Init100Hz();
+	Timer1_Init100Hz();
 	InitializeGlobals();
   EnableInterrupts();
 	uint8_t CS = main_menu;
-	CS = display();
+	//CS = display();
   while(1){
+		//Alarm_On();
 		if(CS == main_menu) CS = menu();
 		if(CS == show_display) CS = display();
 		if(CS == set_time) CS = time();
