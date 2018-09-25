@@ -52,25 +52,22 @@ void PortF_Init(void);
 
 int main(void){
   PLL_Init(Bus80MHz);    	// 80 MHz
+	Timer0A_Init1Hz();               // set up Timer0A for 1 Hz interrupts
 	PortD_Init();
   //PortE4_Init();	
 	PortF_Init();
 	ST7735_InitR(INITR_REDTAB);
 	ST7735_FillScreen(ST7735_BLACK);       
-  Timer0A_Init1Hz();               // set up Timer0A for 1 Hz interrupts
 	//Timer1_Init100Hz();
 	InitializeGlobals();
   EnableInterrupts();
-	//uint8_t CS = main_menu;
+	uint8_t CS = main_menu;
   while(1){
-		if((GPIO_PORTD_DATA_R & 0x01) != 0){ 
-			PF1 |= 0x02;
-		}else{
+		if(sw1) ST7735_OutString("Set_Alarm: ");      //replace with graphics
 		/*if(CS == main_menu) CS = menu();
 		if(CS == show_display) CS = display();
 		if(CS == set_time) CS = time();
 		if(CS == set_alarm) CS = alarm(); */
-		PF1 &= 0x00;}
   }
 }
 

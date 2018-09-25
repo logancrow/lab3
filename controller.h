@@ -6,10 +6,10 @@
 
 #include "stdint.h"
 
-#define sw1 (*((volatile uint32_t *)0x40024004))
-#define sw2 (*((volatile uint32_t *)0x40024008))
-#define sw3 (*((volatile uint32_t *)0x40024010))
-#define sw4 (*((volatile uint32_t *)0x40024020))
+#define sw1 (*((volatile uint32_t *)0x40007004))
+#define sw2 (*((volatile uint32_t *)0x40007008))
+#define sw3 (*((volatile uint32_t *)0x40007010))
+#define sw4 (*((volatile uint32_t *)0x40007020))
 	
 #define main_menu    0
 #define show_display 1
